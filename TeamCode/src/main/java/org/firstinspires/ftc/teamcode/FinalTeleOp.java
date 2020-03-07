@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import java.lang.Math;
 @TeleOp(name = "FinalTeleOp (Blocks to Java)", group = "")
 public class FinalTeleOp extends LinearOpMode {
 
@@ -39,7 +39,7 @@ public class FinalTeleOp extends LinearOpMode {
   double Vertical;
   RevBlinkinLedDriver.BlinkinPattern LEDColor;
   ElapsedTime Led_Wait;
-  double Level_Count;
+  int Level_Count;
   double Horizontal;
   double Cappstone_Down;
   int Lift_Position;
@@ -273,7 +273,7 @@ public class FinalTeleOp extends LinearOpMode {
     if (gamepad2.right_trigger > 0.1) {
       extension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
       extension.setPower(0.2);
-      sleep(25 * gamepad2.right_trigger);
+      sleep(Math.round(25 * gamepad2.right_trigger));
       extension.setPower(0);
       extension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
@@ -286,9 +286,9 @@ public class FinalTeleOp extends LinearOpMode {
     boolean High_Enough;
 
     if (lift.getCurrentPosition() >= 730) {
-      High_Enough = 1;
+      High_Enough = true;
     } else {
-      High_Enough = 0;
+      High_Enough = false;
     }
     return High_Enough;
   }
@@ -522,7 +522,7 @@ public class FinalTeleOp extends LinearOpMode {
       }
       Gripper.setPosition(1);
       Wrist.setPosition(0.76);
-      lift.setTargetPosition(0.5);
+      lift.setTargetPosition(1);
       lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
       lift.setPower(1);
       Level_Count += 1;
@@ -531,7 +531,7 @@ public class FinalTeleOp extends LinearOpMode {
     } else if (gamepad2.left_stick_y != 0) {
       Drive();
       while (gamepad2.left_stick_y != 0) {
-        Lift_Position = Math.min(Math.max(lift.getCurrentPosition() + gamepad2.left_stick_y * -20, 0), 3500);
+        Lift_Position = Math.min(Math.max(lift.getCurrentPosition() + Math.round(gamepad2.left_stick_y * -20), 0), 3500);
         lift.setTargetPosition(Lift_Position);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setPower(1);

@@ -55,7 +55,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
   double Base_Power;
   double Turn_P;
   double Turn_Amount;
-  double Strafe_Multiplier;
+  int Strafe_Multiplier;
   double Auto_Selector2;
   double Remaining_Angle;
   double VerticalPlace;
@@ -79,8 +79,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Button_Drive(double Final_Position, double velocity, double Percent_Slow_Point) {
-    // Put loop blocks here.
+  private void Button_Drive(float Final_Raw, double velocity, double Percent_Slow_Point) {
+    // Put loop blocks here
+    int Final_Position = Math.round(Final_Raw);
     LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
     LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position);
     RightFront.setTargetPosition(RightFront.getCurrentPosition() + Final_Position);
@@ -122,8 +123,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Strafe_Intake(double Final_Position) {
+  private void Strafe_Intake(float Final_Raw) {
     // Put loop blocks here.
+    int Final_Position = Math.round(Final_Raw);
     if (Red_Or_Blue == 1) {
       RightRear.setTargetPosition(RightRear.getCurrentPosition() + Final_Position);
       LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
@@ -172,11 +174,11 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Strafe_Foundation(double Final_Position,
+  private void Strafe_Foundation(float Final_Raw)
       // TODO: Enter the type for argument named Strafe_Percent_Slow_Point
-      UNKNOWN_TYPE Strafe_Percent_Slow_Point) {
+       {
     boolean Is_done_Foundation_Turn;
-
+    int Final_Position = Math.round(Final_Raw);
     // Put loop blocks here.
     if (Red_Or_Blue == 1) {
       RightRear.setTargetPosition(RightRear.getCurrentPosition() - Final_Position);
@@ -227,12 +229,12 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Intake(double How_Far) {
+  private void Intake(float How_Far) {
     Gripper.setPosition(0);
     LeftIntake.setDirection(DcMotorSimple.Direction.REVERSE);
     LeftIntake.setPower(1);
     RightIntake.setPower(1);
-    Button_Drive(16.75 * How_Far, inch_velocity, 0);
+    Button_Drive((float) (16.75 * How_Far), inch_velocity, 0);
     Gripper.setPosition(1);
     LeftIntake.setPower(0);
     RightIntake.setPower(0);
@@ -243,7 +245,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
    */
   private void Auto_Selector() {
     // TODO: Enter the type for variable named Choice
-    UNKNOWN_TYPE Choice;
+    String Choice;
     double Done_Auto;
     double Done_Color;
     String Selection;
@@ -345,40 +347,40 @@ public class TestNewDrivePID3 extends LinearOpMode {
         inch_velocity = 1500;
         sleep(Wait_Time);
         if (Park_Inside == 0) {
-          Drive_Inches(25, 0);
+          Drive_Inches(25);
         }
         if (Foundation_or_Depot == 1) {
-          Strafe_Inches(-16, 0);
+          Strafe_Inches(-16);
         } else {
-          Strafe_Inches(16, 0);
+          Strafe_Inches(16);
         }
       } else if (Auto_Selector2 == 4) {
         sleep(Wait_Time);
         if (Red_Or_Blue == 1) {
-          Strafe_Inches(12, 0);
+          Strafe_Inches(12);
         } else {
-          Strafe_Inches(18, 0);
+          Strafe_Inches(18);
         }
         inch_velocity = 1000;
-        Drive_Inches(29, 0);
+        Drive_Inches(29);
         Move_Foundation();
         inch_velocity = 1500;
         if (Red_Or_Blue == 1) {
-          Strafe_Inches(-47, 0);
+          Strafe_Inches(-47);
         } else {
-          Strafe_Inches(-50, 0);
+          Strafe_Inches(-50);
         }
-        Drive_Inches(-3, 0);
+        Drive_Inches(-3);
       } else {
         if (Red_Or_Blue == 0) {
           // used to be .5
           camera.setPosition(0.47);
           Foundation_Get_Stone();
-          Drive_Inches(15, 0);
+          Drive_Inches(15);
         } else {
           camera.setPosition(0.55);
           Foundation_Get_Stone();
-          Drive_Inches(15, 0);
+          Drive_Inches(15);
         }
         Get_Stone(FindSkystone());
       }
@@ -458,105 +460,105 @@ public class TestNewDrivePID3 extends LinearOpMode {
   private void Skystone_Right() {
     inch_velocity = 1500;
     if (Red_Or_Blue == 0) {
-      Strafe_Inches(-6, null);
+      Strafe_Inches(-6);
     } else {
-      Strafe_Inches(-21, null);
+      Strafe_Inches(-21);
     }
     Intake(35);
     Foundation_Up();
     inch_velocity = 1500;
     if (Auto_Selector2 == 5) {
-      Drive_Inches(-24.5, 0);
+      Drive_Inches(-24.5);
     } else {
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-24, 0);
+        Drive_Inches(-24);
       } else {
-        Drive_Inches(-21, 0);
+        Drive_Inches(-21);
       }
     }
     if (Auto_Selector2 == 1 || Auto_Selector2 == 5) {
-      Drive_Inches(55, 90);
+      Drive_Inches(55);
       Yeet_Skystone();
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-64, 90);
+        Drive_Inches(-64);
       } else {
-        Drive_Inches(-64, 90);
+        Drive_Inches(-64);
       }
       Angle_Function = TurnDegrees(290);
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(12, null);
+        Strafe_Inches(12);
       } else {
-        Strafe_Inches(11, null);
+        Strafe_Inches(11);
       }
       Intake(9);
       inch_velocity = 1500;
-      Drive_Inches(-10, 0);
+      Drive_Inches(-10);
       if (Red_Or_Blue == 0) {
         Angle_Function = TurnDegrees(89);
       } else {
         Angle_Function = TurnDegrees(91);
       }
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(15, null);
+        Strafe_Inches(15);
       } else {
-        Strafe_Inches(12, null);
+        Strafe_Inches(12);
       }
       if (Red_Or_Blue == 5) {
       } else {
       }
-      Drive_Inches(65, 89);
+      Drive_Inches(65);
       Yeet_Skystone();
-      Drive_Inches(-10, 90);
+      Drive_Inches(-10);
     } else if (Auto_Selector2 == 2) {
       inch_velocity = 1750;
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(93, null);
+        Strafe_Inches(93);
       } else {
-        Strafe_Inches(93, null);
+        Strafe_Inches(93);
       }
-      drive_in(25 * 16.75, null, null);
+      drive_in((float)(25 * 16.75));
       Foundation_Down();
       sleep(300);
       if (Red_Or_Blue == 0) {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(-34 * 16.75, -20, -20);
       } else {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(34 * 16.75, -20, -20);
       }
       Foundation_Up();
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Strafe_Foundation(35 * 19.5, null);
+        Strafe_Foundation((float)(35 * 19.5));
       } else {
-        Strafe_Foundation(33 * 19.5, null);
+        Strafe_Foundation(((float)(33 * 19.5)));
       }
       Angle_Function = TurnDegrees(88);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-64, 90);
+        Drive_Inches(-64);
       } else {
-        Drive_Inches(-63, 90);
+        Drive_Inches(-63);
       }
       sleep(300);
       Angle_Function = TurnDegrees(285);
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(24, 12);
+        Strafe_Inches(24);
       } else {
-        Strafe_Inches(14, 12);
+        Strafe_Inches(14);
       }
       Intake(7);
       if (Red_Or_Blue == 0) {
-        Strafe_Foundation(28 * 19.5, null);
+        Strafe_Foundation((float)(28 * 19.5));
       } else {
-        Strafe_Foundation(25 * 19.5, null);
+        Strafe_Foundation((float)(25 * 19.5));
       }
       Angle_Function = TurnDegrees(90);
-      Drive_Inches(60, 90);
+      Drive_Inches(60);
       Yeet_Skystone();
-      Drive_Inches(-15, 90);
+      Drive_Inches(-15);
     } else {
       Yeet_Skystone();
-      Drive_Inches(-17, 90);
+      Drive_Inches(-17);
     }
   }
 
@@ -565,28 +567,28 @@ public class TestNewDrivePID3 extends LinearOpMode {
    */
   private void SKystone_Center() {
     if (Red_Or_Blue == 0) {
-      Strafe_Inches(6.5, 0);
+      Strafe_Inches(6.5);
     } else {
-      Strafe_Inches(-13, 0);
+      Strafe_Inches(-13);
     }
     Intake(35);
     if (Auto_Selector2 == 6) {
       Angle_Function = TurnDegrees(270);
-      Drive_Inches(-80, 0.9);
+      Drive_Inches(-80);
       Angle_Function = TurnDegrees(0);
-      Drive_Inches(4, 0);
+      Drive_Inches(4);
       Deliver_Skystone1();
     } else {
       if (Auto_Selector2 == 5) {
-        Drive_Inches(-27, 0);
+        Drive_Inches(-27);
       } else if (Auto_Selector2 == 1) {
         // -22 before strafe
-        Drive_Inches(-30, 0);
+        Drive_Inches(-30);
       } else {
         if (Red_Or_Blue == 0) {
-          Drive_Inches(-25, 0);
+          Drive_Inches(-25);
         } else {
-          Drive_Inches(-23, 0);
+          Drive_Inches(-23);
         }
       }
       // Disabled for attempt to strafe
@@ -594,26 +596,26 @@ public class TestNewDrivePID3 extends LinearOpMode {
     if (Auto_Selector2 == 1 || Auto_Selector2 == 5) {
       if (Auto_Selector2 == 5) {
         if (VerticalPlace == 1) {
-          Drive_Inches(18.5, 90);
+          Drive_Inches(18.5);
           Deliver_Skystone1();
-          Drive_Inches(-18.5, 90);
+          Drive_Inches(-18.5);
           sleep(750);
         } else {
           if (Red_Or_Blue == 0) {
-            Drive_Inches(36, 90);
+            Drive_Inches(36);
             Deliver_Skystone1();
-            Drive_Inches(-34.5, 90);
+            Drive_Inches(-34.5);
           } else {
-            Drive_Inches(34, 90);
+            Drive_Inches(34);
             Deliver_Skystone1();
-            Drive_Inches(-32.5, 90);
+            Drive_Inches(-32.5);
           }
         }
       } else {
-        Drive_Inches(47, 90);
+        Drive_Inches(47);
         Yeet_Skystone();
       }
-      Drive_Inches(-65, 90);
+      Drive_Inches(-65);
       Angle_Function = TurnDegrees(0);
       Foundation_Get_Stone();
       if (Red_Or_Blue == 0) {
@@ -624,64 +626,64 @@ public class TestNewDrivePID3 extends LinearOpMode {
       Foundation_Up();
       inch_velocity = 1500;
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-31, 0);
+        Drive_Inches(-31);
       } else {
-        Drive_Inches(-31, 0);
+        Drive_Inches(-31);
       }
       if (Red_Or_Blue == 0) {
         Angle_Function = TurnDegrees(92);
       } else {
         Angle_Function = TurnDegrees(92);
       }
-      Drive_Inches(73, 0);
+      Drive_Inches(73);
       Yeet_Skystone();
-      Drive_Inches(-15, 90);
+      Drive_Inches(-15);
     } else if (Auto_Selector2 == 2) {
       Foundation_Up();
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(81, null);
+        Strafe_Inches(81);
       } else {
-        Strafe_Inches(84, null);
+        Strafe_Inches(84);
       }
-      drive_in(22 * 16.75, 10, 10);
+      drive_in((float)(22 * 16.75));
       Foundation_Down();
       sleep(250);
       if (Red_Or_Blue == 0) {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(-32 * 16.75, -20, -20);
       } else {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(22 * 16.75, -20, -20);
       }
       Foundation_Up();
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Strafe_Foundation(33 * 19.5, null);
+        Strafe_Foundation((float)(33 * 19.5));
       } else {
-        Strafe_Foundation(29 * 19.5, null);
+        Strafe_Foundation((float)(29 * 19.5));
       }
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-71, 90);
+        Drive_Inches(-71);
       } else {
-        Drive_Inches(-71, 90);
+        Drive_Inches(-71);
       }
       Foundation_Get_Stone();
       Angle_Function = TurnDegrees(355);
       Intake(35);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-23, 90);
+        Drive_Inches(-23);
       } else {
-        Drive_Inches(-27, 90);
+        Drive_Inches(-27);
       }
       Foundation_Up();
       Angle_Function = TurnDegrees(90);
-      Drive_Inches(68, 90);
+      Drive_Inches(68);
       Yeet_Skystone();
-      Drive_Inches(-17, 90);
+      Drive_Inches(-17);
     } else {
       Yeet_Skystone();
-      Drive_Inches(-17, 90);
+      Drive_Inches(-17);
     }
   }
 
@@ -729,9 +731,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
     FoundationRight.setPosition(0.4);
     sleep(2000);
     if (Red_Or_Blue == 0) {
-      Fast_Drive(-35 * 16.75);
+      Fast_Drive((float)(-35 * 16.75));
     } else {
-      Fast_Drive(-33.5 * 16.75);
+      Fast_Drive((float)(-33.5 * 16.75));
     }
     FoundationLeft.setPosition(0.39);
     FoundationRight.setPosition(0.9);
@@ -759,42 +761,42 @@ public class TestNewDrivePID3 extends LinearOpMode {
   private void Skystone_Left() {
     inch_velocity = 1500;
     if (Red_Or_Blue == 0) {
-      Strafe_Inches(14.5, null);
+      Strafe_Inches(14.5);
     } else {
-      Strafe_Inches(-5, null);
+      Strafe_Inches(-5);
     }
     Intake(35);
     Foundation_Up();
     inch_velocity = 1500;
     // -22 before strafe
     if (Auto_Selector2 == 5) {
-      Drive_Inches(-22, 0);
+      Drive_Inches(-22);
     } else {
-      Drive_Inches(-22, 0);
+      Drive_Inches(-22);
     }
     if (Auto_Selector2 == 1 || Auto_Selector2 == 5) {
       if (Auto_Selector2 == 5) {
         if (VerticalPlace == 1) {
-          Drive_Inches(18.5, 90);
+          Drive_Inches(18.5);
           Deliver_Skystone1();
-          Drive_Inches(-18.5, 90);
+          Drive_Inches(-18.5);
           sleep(750);
         } else {
           if (Red_Or_Blue == 0) {
-            Drive_Inches(74, 90);
+            Drive_Inches(74);
             Deliver_Skystone1();
-            Drive_Inches(-33, 90);
+            Drive_Inches(-33);
           } else {
-            Drive_Inches(74, 90);
+            Drive_Inches(74);
             Deliver_Skystone1();
-            Drive_Inches(-32.5, 90);
+            Drive_Inches(-32.5);
           }
         }
       } else {
-        Drive_Inches(43, 90);
+        Drive_Inches(43);
         Yeet_Skystone();
       }
-      Drive_Inches(-62, 90);
+      Drive_Inches(-62);
       Angle_Function = TurnDegrees(0);
       Foundation_Get_Stone();
       if (Red_Or_Blue == 0) {
@@ -805,64 +807,64 @@ public class TestNewDrivePID3 extends LinearOpMode {
       Foundation_Up();
       inch_velocity = 1500;
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-35, 0);
+        Drive_Inches(-35);
       } else {
-        Drive_Inches(-37, 0);
+        Drive_Inches(-37);
       }
       Angle_Function = TurnDegrees(92);
-      Drive_Inches(60, 0);
+      Drive_Inches(60);
       Yeet_Skystone();
-      Drive_Inches(-7, 90);
+      Drive_Inches(-7);
     } else if (Auto_Selector2 == 2) {
       Foundation_Up();
       if (Red_Or_Blue == 0) {
-        Strafe_Inches(77, null);
+        Strafe_Inches(77);
       } else {
-        Strafe_Inches(75, null);
+        Strafe_Inches(75);
       }
-      drive_in(22 * 16.75, null, null);
+      drive_in((float)(22 * 16.75));
       Foundation_Down();
       sleep(300);
       if (Red_Or_Blue == 0) {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(-34 * 16.75, -20, -20);
       } else {
-        Fast_Drive(-27 * 16.75);
+        Fast_Drive((float)(-27 * 16.75));
         Foundation_Turn(34 * 16.75, -20, -20);
       }
       Foundation_Up();
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Strafe_Foundation(35 * 19.5, null);
+        Strafe_Foundation((float)(35 * 19.5));
       } else {
-        Strafe_Foundation(34 * 19.5, null);
+        Strafe_Foundation((float)(34 * 19.5));
       }
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-57, 90);
+        Drive_Inches(-57);
       } else {
-        Drive_Inches(-57, 90);
+        Drive_Inches(-57);
       }
       Foundation_Get_Stone();
       Angle_Function = TurnDegrees(355);
       Intake(30);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(-22, 90);
+        Drive_Inches(-22);
       } else {
-        Drive_Inches(-26, 90);
+        Drive_Inches(-26);
       }
       Foundation_Up();
       Angle_Function = TurnDegrees(90);
       if (Red_Or_Blue == 0) {
-        Drive_Inches(58, 90);
+        Drive_Inches(58);
       } else {
-        Drive_Inches(62, 90);
+        Drive_Inches(62);
       }
       Yeet_Skystone();
-      Drive_Inches(-17, 90);
+      Drive_Inches(-17);
     } else {
       Yeet_Skystone();
-      Drive_Inches(-17, 90);
+      Drive_Inches(-17);
     }
   }
 
@@ -1049,7 +1051,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
     Gripper.setPosition(1);
     while (opModeIsActive() && extension.getCurrentPosition() > 75) {
     }
-    lift.setTargetPosition(0.5);
+    lift.setTargetPosition(1);
     lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     lift.setPower(1);
   }
@@ -1057,8 +1059,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Strafe(double Final_Position, double Strafe_Percent_Slow_Point) {
+  private void Strafe(double Final_Raw) {
     // Put loop blocks here.
+    int Final_Position = Math.round((float)(Final_Raw));
     LeftFront.setTargetPosition(LeftFront.getCurrentPosition() - Final_Position * Strafe_Multiplier);
     LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position * Strafe_Multiplier);
     RightFront.setTargetPosition(RightFront.getCurrentPosition() + Final_Position * Strafe_Multiplier);
@@ -1111,11 +1114,11 @@ public class TestNewDrivePID3 extends LinearOpMode {
    */
   private void Foundation_Turn3(
       // TODO: Enter the type for argument named Final_Position
-      UNKNOWN_TYPE Final_Position,
+      double Final_Position,
       // TODO: Enter the type for argument named velocity
-      UNKNOWN_TYPE velocity,
+      double velocity,
       // TODO: Enter the type for argument named Percent_Slow_Point
-      UNKNOWN_TYPE Percent_Slow_Point) {
+      double Percent_Slow_Point) {
     // Put loop blocks here.
     telemetry.addData("Target", LeftFront.getTargetPosition());
     telemetry.addData("Target", RightFront.getTargetPosition());
@@ -1145,47 +1148,13 @@ public class TestNewDrivePID3 extends LinearOpMode {
     }
   }
 
-  /**
-   * Describe this function...
-   */
-  private void Foundation_Turn2(
-      // TODO: Enter the type for argument named Final_Position
-      UNKNOWN_TYPE Final_Position,
-      // TODO: Enter the type for argument named velocity
-      UNKNOWN_TYPE velocity,
-      // TODO: Enter the type for argument named Percent_Slow_Point
-      UNKNOWN_TYPE Percent_Slow_Point) {
-    // Put loop blocks here.
-    LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
-    LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position);
-    RightFront.setTargetPosition(RightFront.getCurrentPosition() - Final_Position);
-    RightRear.setTargetPosition(RightRear.getCurrentPosition() - Final_Position);
-    telemetry.addData("Target", LeftFront.getTargetPosition());
-    telemetry.addData("Target", RightFront.getTargetPosition());
-    telemetry.addData("Target", LeftRear.getTargetPosition());
-    telemetry.addData("Target", RightRear.getTargetPosition());
-    LeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    RightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    LeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    RightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    while (opModeIsActive() && (LeftFront.isBusy() || RightFront.isBusy())) {
-      Left_Velocity = 1;
-      Right_Velocity = 1;
-      LeftFront.setPower(Left_Velocity);
-      RightFront.setPower(Right_Velocity);
-      LeftRear.setPower(Left_Velocity);
-      RightRear.setPower(Right_Velocity);
-      telemetry.addData("Power L", Left_Velocity);
-      telemetry.addData("Power R", Right_Velocity);
-      telemetry.update();
-    }
-  }
 
   /**
    * Describe this function...
    */
-  private void AutoDrive(double Final_Position, double velocity, double Percent_Slow_Point) {
+  private void AutoDrive(float Final_Raw) {
     // Put loop blocks here.
+    int Final_Position = Math.round((float)(Final_Raw));
     LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
     LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position);
     RightFront.setTargetPosition(RightFront.getCurrentPosition() + Final_Position);
@@ -1215,7 +1184,8 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void drive_in(double Final_Position, double velocity, double Percent_Slow_Point) {
+  private void drive_in(float Final_Raw) {
+    int Final_Position = Math.round((float)(Final_Raw));
     // Put loop blocks here.
     LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
     LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position);
@@ -1263,56 +1233,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Button_Drive2(
-      // TODO: Enter the type for argument named Final_Position
-      UNKNOWN_TYPE Final_Position,
-      double velocity, double Percent_Slow_Point) {
-    Mid_Position = Math.abs(Final_Position - Math.abs(LeftFront.getCurrentPosition())) * Percent_Slow_Point + Math.abs(LeftFront.getCurrentPosition());
-    // Put loop blocks here.
-    LeftFront.setTargetPosition(LeftFront.getCurrentPosition() + Final_Position);
-    LeftRear.setTargetPosition(LeftRear.getCurrentPosition() + Final_Position);
-    RightFront.setTargetPosition(RightFront.getCurrentPosition() + Final_Position);
-    RightRear.setTargetPosition(RightRear.getCurrentPosition() + Final_Position);
-    telemetry.addData("Target", LeftFront.getTargetPosition());
-    telemetry.addData("Target", RightFront.getTargetPosition());
-    telemetry.addData("Target", LeftRear.getTargetPosition());
-    telemetry.addData("Target", RightRear.getTargetPosition());
-    LeftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    RightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    LeftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    RightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    while (opModeIsActive() && (LeftFront.isBusy() || RightFront.isBusy())) {
-      if (Math.abs(LeftFront.getCurrentPosition()) <= Math.abs(Mid_Position)) {
-        Left_Velocity = 1;
-        Right_Velocity = 1;
-      } else {
-        Left_Velocity = 0.4;
-        Right_Velocity = 0.4;
-      }
-      if (touch1.getState() == false) {
-        LeftIntake.setPower(0);
-        RightIntake.setPower(0);
-        Gripper.setPosition(1);
-      }
-      LeftFront.setPower(Left_Velocity);
-      RightFront.setPower(Right_Velocity);
-      LeftRear.setPower(Left_Velocity);
-      RightRear.setPower(Right_Velocity);
-      telemetry.addData("Power L", Left_Velocity);
-      telemetry.addData("Power R", Right_Velocity);
-      telemetry.addData("velo", velocity);
-      telemetry.addData("Steer", Steer2);
-      telemetry.addData("Correction", Correction);
-      telemetry.update();
-    }
-    telemetry.update();
-  }
 
-  /**
-   * Describe this function...
-   */
-  private void Strafe_Inches(double Inches, double Strafe_Percent_Slow) {
-    Strafe(19.5 * Inches, Strafe_Percent_Slow);
+  private void Strafe_Inches(double Inches) {
+    Strafe(19.5 * Inches);
     LeftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     RightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     LeftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -1324,7 +1247,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
    */
   private double Get_Error(
       // TODO: Enter the type for argument named Target_Angle
-      UNKNOWN_TYPE Target_Angle) {
+      double Target_Angle) {
     double Robot_Error;
 
     Robot_Error = Target_Angle - GetDegrees();
@@ -1346,9 +1269,9 @@ public class TestNewDrivePID3 extends LinearOpMode {
     boolean High_Enough;
 
     if (lift.getCurrentPosition() >= 730) {
-      High_Enough = 1;
+      High_Enough = true;
     } else {
-      High_Enough = 0;
+      High_Enough = false;
     }
     return High_Enough;
   }
@@ -1356,8 +1279,8 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Drive_Inches(double Inches, double Percent_Slow) {
-    AutoDrive(16.75 * Inches, inch_velocity, Percent_Slow);
+  private void Drive_Inches(double Inches) {
+    AutoDrive((float)(16.75 * Inches));
   }
 
   /**
@@ -1387,7 +1310,6 @@ public class TestNewDrivePID3 extends LinearOpMode {
     double SkystoneX;
     double Block1X;
     double Block2X;
-    Recognition recognition;
 
     if (opModeIsActive()) {
       // Put run blocks here.
@@ -1469,10 +1391,11 @@ public class TestNewDrivePID3 extends LinearOpMode {
   /**
    * Describe this function...
    */
-  private void Fast_Drive(double Fast_Position) {
+  private void Fast_Drive(float Fast_Raw) {
     ElapsedTime DriveTime;
     double Velocity_Fast;
     double VeloNotFast;
+    int Fast_Position = Math.round((float)(Fast_Raw));
 
     DriveTime = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
     // Put loop blocks here.
@@ -1595,7 +1518,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
    */
   private double TurnDegrees(double Desired_Angle) {
     // TODO: Enter the type for variable named Percent_Slow_Point
-    UNKNOWN_TYPE Percent_Slow_Point;
+    double Percent_Slow_Point;
 
     // NO NEGATIVE DEGREES - Desired Angle must be 0-360
     if (Red_Or_Blue == 1) {
@@ -1666,7 +1589,7 @@ public class TestNewDrivePID3 extends LinearOpMode {
     sleep(200);
     LeftIntake.setPower(-0.8);
     RightIntake.setPower(-0.8);
-    Drive_Inches(-5, null);
+    Drive_Inches(-5);
     LeftIntake.setPower(0);
     RightIntake.setPower(0);
     lift.setTargetPosition(0);
